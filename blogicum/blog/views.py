@@ -1,7 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
-from django.db.models import Count
+from django.db.models import Count ,Q
 from django.views.generic import (
     CreateView,
     DeleteView,
@@ -172,10 +172,8 @@ class PostDetailView(PostsQuerySetMixin, DetailView):
         return context
 
     def get_queryset(self):
-        return (
-            super()
-            .get_queryset()
-            .prefetch_related(
-                "comments",
-            )
-        )
+        queryset = super().get_queryset().prefetch_related("comments")
+        if self.request.user.is_authenticated:
+            return queryset.filter(Q(is_published=True) | Q(author=self.request.user))
+        return queryset.filter(is_published=True)
+
