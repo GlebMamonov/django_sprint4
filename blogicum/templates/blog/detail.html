@@ -17,7 +17,7 @@
           <small>
             {% if not post.is_published and user != post.author %}
               <p class="text-danger">Этот пост снят с публикации администратором</p>
-            {% elif not post.category.is_published %}
+            {% elif not post.category.is_published and user != post.author %}
               <p class="text-danger">Выбранная категория снята с публикации администратором</p>
             {% endif %}
             {{ post.pub_date|date:"d E Y, H:i" }} | {% if post.location and post.location.is_published %}{{ post.location.name }}{% else %}Планета Земля{% endif %}<br>
