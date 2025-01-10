@@ -25,9 +25,6 @@ class PostManager(models.Manager):
         )
 
 
-
-
-
 class BaseModel(models.Model):
     is_published = models.BooleanField(
         verbose_name="Опубликовано",
